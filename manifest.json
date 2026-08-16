@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "FB Catch",
-  "description": "Export Facebook posts & comments — local only, no data upload",
+  "description": "Backup Facebook fan pages locally — posts, comments, media. No servers, no tracking.",
   "version": "0.1.0",
   "author": "Thomas Chen",
   "homepage_url": "https://github.com/thomas-jimmy-chen/fb-catch",
