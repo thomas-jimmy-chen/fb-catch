@@ -572,8 +572,8 @@
       if (groupsMatch && !targetId) {
         feedContext = 'group';
         const html = document.documentElement.innerHTML;
-        // Groups 的 numeric ID 在 HTML 的 "group_id":"xxx"
-        const gidMatch = html.match(/"group_id":"(\d+)"/);
+        // Groups 的 numeric ID 在 HTML 的 "group_id":"xxx" / \"group_id\":\"xxx\" / "group_id":xxx
+        const gidMatch = html.match(/\\?"?group_id\\?"?:\s*\\?"?(\d+)\\?"?/);
         if (gidMatch) {
           targetId = gidMatch[1];
         } else {
@@ -593,18 +593,36 @@
       }
       if (!targetId) {
         const html = document.documentElement.innerHTML;
-        // 方法 1: "userID":"xxx"
-        const uidMatch = html.match(/"userID":"(\d+)"/);
-        if (uidMatch) targetId = uidMatch[1];
-        // 方法 2: "profile_owner":{"id":"xxx"}
+        // Q = 引號（可能是 " 或 \" 或不存在）— FB HTML 三種格式並存
+        const Q = `\\\\?"?`;
+        // 優先順序：精確度高→低。page_id/entity_id 在側欄/廣告有多個，放後面
+        // 方法 1: selectedID（ProfileCometHeaderQuery 的目標 ID，最精確）
+        const selMatch = html.match(new RegExp(`${Q}selectedID${Q}:\\s*${Q}(\\d+)${Q}`));
+        if (selMatch) targetId = selMatch[1];
+        // 方法 2: profile_owner（結構化，不易被側欄污染）
         if (!targetId) {
-          const ownerMatch = html.match(/"profile_owner":\s*\{[^}]*"id":"(\d+)"/);
+          const ownerMatch = html.match(new RegExp(`${Q}profile_owner${Q}:\\s*\\{[^}]*${Q}id${Q}:\\s*${Q}(\\d+)${Q}`));
           if (ownerMatch) targetId = ownerMatch[1];
         }
-        // 方法 3: entity_id in URL params
+        // 方法 3: page_id（可能來自側欄/廣告，但作為 fallback）
         if (!targetId) {
-          const urlMatch = html.match(/"entity_id":"(\d+)"/);
-          if (urlMatch) targetId = urlMatch[1];
+          const pageIdMatch = html.match(new RegExp(`${Q}page_id${Q}:\\s*${Q}(\\d+)${Q}`));
+          if (pageIdMatch) targetId = pageIdMatch[1];
+        }
+        // 方法 4: entity_id
+        if (!targetId) {
+          const entityMatch = html.match(new RegExp(`${Q}entity_id${Q}:\\s*${Q}(\\d+)${Q}`));
+          if (entityMatch) targetId = entityMatch[1];
+        }
+        // 方法 5: ownerID
+        if (!targetId) {
+          const ownerIdMatch = html.match(new RegExp(`${Q}ownerID${Q}:\\s*${Q}(\\d+)${Q}`));
+          if (ownerIdMatch) targetId = ownerIdMatch[1];
+        }
+        // 方法 6: userID（最後 — 粉專頁面上這是登入者自己的 ID）
+        if (!targetId) {
+          const uidMatch = html.match(new RegExp(`${Q}userID${Q}:\\s*${Q}(\\d+)${Q}`));
+          if (uidMatch) targetId = uidMatch[1];
         }
       }
       if (!targetId) {
@@ -870,8 +888,35 @@
 
   // ─── Posts GraphQL（Phase 2 #4 — 路線 A）────────────────
 
-  const POSTS_DOC_ID = '27826317400295089';
-  const GROUPS_DOC_ID = '27152044451084198';
+  // Fallback doc_id（Facebook 每 2-6 週輪換，動態擷取失敗時才用）
+  const POSTS_DOC_ID_FALLBACK = '29298992409688802';
+  const GROUPS_DOC_ID_FALLBACK = '27152044451084198';
+
+  /**
+   * 從頁面 HTML preloader 動態擷取 doc_id（跟上 Facebook 輪換）
+   * @param {string} queryName - e.g. 'ProfileCometTimelineFeedQuery'
+   * @param {string} fallback - 硬編碼 fallback
+   * @returns {string} doc_id
+   */
+  function extractDocId(queryName, fallback) {
+    try {
+      const html = document.documentElement.innerHTML;
+      const escaped = queryName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      // FB preloader 格式："preloaderID":"adp_ProfileCometTimelineFeedQueryRelayPreloader_xxx","queryID":"29298992409688802"
+      // queryName 出現在 preloaderID 值裡（不是獨立欄位），queryID 緊跟其後
+      const re1 = new RegExp(`${escaped}[A-Za-z0-9_]*","queryID":"(\\d{10,})"`);
+      const m1 = html.match(re1);
+      if (m1) return m1[1];
+      // 備用：queryName 作為獨立欄位
+      const re2 = new RegExp(`"queryName"\\s*:\\s*"${escaped}"[^}]{0,500}"queryID"\\s*:\\s*"(\\d{10,})"`);
+      const m2 = html.match(re2);
+      if (m2) return m2[1];
+      const re3 = new RegExp(`"queryID"\\s*:\\s*"(\\d{10,})"[^}]{0,500}"queryName"\\s*:\\s*"${escaped}"`);
+      const m3 = html.match(re3);
+      if (m3) return m3[1];
+    } catch (_) {}
+    return fallback;
+  }
 
   /**
    * GraphQL 貼文清單查詢（支援 Timeline / Groups）
@@ -906,34 +951,60 @@
       useDefaultActor: false,
       id: targetId
     } : {
-      afterTime: afterTime || null,
-      beforeTime: beforeTime || null,
       count,
       cursor,
-      feedLocation: 'TIMELINE',
       feedbackSource: 0,
-      focusCommentID: null,
-      memorializedSplitTimeFilter: null,
+      feedLocation: 'TIMELINE',
       omitPinnedPost: true,
-      postedBy: null,
-      privacy: null,
       privacySelectorRenderLocation: 'COMET_STREAM',
-      referringStoryRenderLocation: null,
       renderLocation: 'timeline',
       scale: 1,
-      stream_count: 1,
-      taggedInOnly: null,
-      useDefaultActor: false,
-      id: targetId
+      trackingCode: null,
+      userID: targetId,
+      postedBy: { group: 'OWNER' },
+      // Relay provider variables（Facebook 2025-08 起必填）
+      __relay_internal__pv__GHLShouldChangeAdIdFieldNamerelayprovider: true,
+      __relay_internal__pv__GHLShouldChangeSponsoredDataFieldNamerelayprovider: true,
+      __relay_internal__pv__CometFeedStory_enable_reactor_facepilerelayprovider: false,
+      __relay_internal__pv__CometFeedStory_enable_social_bubblesrelayprovider: false,
+      __relay_internal__pv__CometFeedStory_enable_post_permalink_white_space_clickrelayprovider: false,
+      __relay_internal__pv__CometUFICommentActionLinksRewriteEnabledrelayprovider: true,
+      __relay_internal__pv__CometUFICommentAvatarStickerAnimatedImagerelayprovider: false,
+      __relay_internal__pv__IsWorkUserrelayprovider: false,
+      __relay_internal__pv__TestPilotShouldIncludeDemoAdUseCaserelayprovider: false,
+      __relay_internal__pv__FBReels_deprecate_short_form_video_context_gkrelayprovider: true,
+      __relay_internal__pv__FBReels_enable_view_dubbed_audio_type_gkrelayprovider: true,
+      __relay_internal__pv__CometFeedShareMedia_shouldPrefetchShareImagerelayprovider: false,
+      __relay_internal__pv__CometImmersivePhotoCanUserDisable3DMotionrelayprovider: false,
+      __relay_internal__pv__WorkCometIsEmployeeGKProviderrelayprovider: false,
+      __relay_internal__pv__IsMergQAPollsrelayprovider: false,
+      __relay_internal__pv__FBReelsMediaFooter_comet_enable_reels_ads_gkrelayprovider: true,
+      __relay_internal__pv__CometUFIReactionsEnableShortNamerelayprovider: false,
+      __relay_internal__pv__CometUFICommentAutoTranslationTyperelayprovider: 'ORIGINAL',
+      __relay_internal__pv__CometUFISingleLineUFIrelayprovider: false,
+      __relay_internal__pv__CometUFIShareActionMigrationrelayprovider: true,
+      __relay_internal__pv__relay_provider_comet_ufi_ssr_seo_deferrelayprovider: true,
+      __relay_internal__pv__CometUFI_dedicated_comment_routable_dialog_gkrelayprovider: true,
+      __relay_internal__pv__ReelsIFUCard_reelsIFULikeCountrelayprovider: false,
+      __relay_internal__pv__FBReelsIFUTileContent_reelsIFUPlayOnHoverrelayprovider: true,
+      __relay_internal__pv__GroupsCometGYSJFeedItemHeightrelayprovider: 206,
+      __relay_internal__pv__ShouldEnableBakedInTextStoriesrelayprovider: false,
+      __relay_internal__pv__StoriesShouldIncludeFbNotesrelayprovider: false
     };
+
+    // 日期篩選（若有指定）
+    if (afterTime) variables.afterTime = afterTime;
+    if (beforeTime) variables.beforeTime = beforeTime;
 
     const body = new URLSearchParams({
       fb_dtsg: dtsg,
       fb_api_caller_class: 'RelayModern',
-      fb_api_req_friendly_name: isGroup ? 'GroupsCometFeedRegularStoriesPaginationQuery' : 'ProfileCometTimelineFeedRefetchQuery',
+      fb_api_req_friendly_name: isGroup ? 'GroupsCometFeedRegularStoriesPaginationQuery' : 'ProfileCometTimelineFeedQuery',
       variables: JSON.stringify(variables),
       server_timestamps: 'true',
-      doc_id: isGroup ? GROUPS_DOC_ID : POSTS_DOC_ID
+      doc_id: isGroup
+        ? extractDocId('GroupsCometFeedRegularStoriesPaginationQuery', GROUPS_DOC_ID_FALLBACK)
+        : extractDocId('ProfileCometTimelineFeedQuery', POSTS_DOC_ID_FALLBACK)
     });
 
     // Rate limit retry loop（最多 3 次）
@@ -975,7 +1046,7 @@
       for (const line of lines) {
         try {
           const json = JSON.parse(line);
-          if ((json.data?.node?.timeline_list_feed_units || json.data?.node?.timeline_feed_units || json.data?.node?.group_feed) && !baseData) {
+          if (((json.data?.node || json.data?.user)?.timeline_list_feed_units || (json.data?.node || json.data?.user)?.timeline_feed_units || json.data?.node?.group_feed) && !baseData) {
             // 初始資料（含第一篇貼文；Groups 用 group_feed）
             baseData = json;
           } else if (json.label?.includes('$stream$') && json.data?.node) {
@@ -999,7 +1070,8 @@
       if (!baseData) throw new Error('No valid data in GraphQL posts response');
 
       // 合併 stream edges 到 baseData（Groups 用 group_feed）
-      const feed = baseData.data.node.timeline_list_feed_units || baseData.data.node.timeline_feed_units || baseData.data.node.group_feed;
+      const dataRoot = baseData.data.node || baseData.data.user;
+      const feed = dataRoot.timeline_list_feed_units || dataRoot.timeline_feed_units || dataRoot.group_feed;
       if (streamEdges.length > 0 && feed.edges) {
         feed.edges.push(...streamEdges);
       }
@@ -1018,9 +1090,10 @@
    */
   function parsePostsResponse(data) {
     const posts = [];
-    const feedUnits = data?.data?.node?.timeline_list_feed_units
-      || data?.data?.node?.timeline_feed_units
-      || data?.data?.node?.group_feed;
+    const dataRoot = data?.data?.node || data?.data?.user;
+    const feedUnits = dataRoot?.timeline_list_feed_units
+      || dataRoot?.timeline_feed_units
+      || dataRoot?.group_feed;
     if (!feedUnits) return { posts, pageInfo: null };
 
     const edges = feedUnits.edges || [];
@@ -3151,20 +3224,24 @@
         }
       }
       if (isGroup) {
-        const gid = html.match(/"groupID":"(\d+)"/);
+        const gid = html.match(/\\?"?groupID\\?"?:\s*\\?"?(\d+)\\?"?/);
         if (gid) return { id: gid[1], context: 'group', name };
       }
       // 多模式匹配：涵蓋粉專/個人/各種 Facebook HTML 結構
+      // Q = 引號（可能是 " 或 \" 或不存在）— FB HTML 三種格式並存
+      const Q = `\\\\?"?`;
+      // 優先順序：精確度高→低。page_id/entity_id 在側欄/廣告有多個，放後面
       const idPatterns = [
-        /"userID":"(\d+)"/,
-        /"profile_owner":\s*\{[^}]*"id":"(\d+)"/,
-        /"entity_id":"(\d+)"/,
-        /"pageID":"(\d+)"/,
-        /"ownerID":"(\d+)"/,
-        /"actorID":"(\d+)"/,
+        new RegExp(`${Q}selectedID${Q}:\\s*${Q}(\\d+)${Q}`),
+        new RegExp(`${Q}profile_owner${Q}:\\s*\\{[^}]*${Q}id${Q}:\\s*${Q}(\\d+)${Q}`),
+        new RegExp(`${Q}__isProfile${Q}:\\s*${Q}Page${Q},\\s*${Q}id${Q}:\\s*${Q}(\\d+)${Q}`),
         /content="fb:\/\/(?:page|profile)\/(\d+)"/,
-        /"__isProfile":"Page","id":"(\d+)"/,
-        /"page_id":"(\d+)"/
+        new RegExp(`${Q}pageID${Q}:\\s*${Q}(\\d+)${Q}`),
+        new RegExp(`${Q}page_id${Q}:\\s*${Q}(\\d+)${Q}`),
+        new RegExp(`${Q}entity_id${Q}:\\s*${Q}(\\d+)${Q}`),
+        new RegExp(`${Q}ownerID${Q}:\\s*${Q}(\\d+)${Q}`),
+        new RegExp(`${Q}actorID${Q}:\\s*${Q}(\\d+)${Q}`),
+        new RegExp(`${Q}userID${Q}:\\s*${Q}(\\d+)${Q}`)
       ];
       for (const pat of idPatterns) {
         const m = html.match(pat);
