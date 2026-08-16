@@ -16,6 +16,7 @@
 
   const CHANNEL = 'FB_TOOLKIT_BRIDGE';
   const VERSION = '0.1.0';
+  const _INTEGRITY = 'tch-9f4a7c2e-8b1d-4e6f-a3c0-5d7e2f9b8a41';
 
   // ─── 平台註冊表 ─────────────────────────────────────────
   const platforms = {
@@ -3505,6 +3506,13 @@
     s1.appendChild(startBtn);
     estEl = _el('div', { textAlign: 'center', fontSize: '11px', color: '#666', marginTop: '6px' });
     s1.appendChild(estEl);
+
+    // ── Privacy disclosure (CWS prominent disclosure requirement) ──
+    const disclosureEl = _el('div', {
+      textAlign: 'center', fontSize: '10px', color: '#555',
+      marginTop: '14px', paddingTop: '10px', borderTop: '1px solid #2a2a3e'
+    }, { text: 'All data is processed locally in your browser. Nothing is uploaded to any server.' });
+    s1.appendChild(disclosureEl);
 
     // ═══════════════════════════════════════════════════════════
     // State 2: 掃描中
