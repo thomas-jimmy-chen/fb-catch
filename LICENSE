@@ -1,0 +1,231 @@
+# FB Catch Source Available License v1.0
+
+Copyright (c) 2026 Thomas Chen. All rights reserved.
+
+---
+
+## 1. Acceptance
+
+By using, copying, or distributing this software, you accept and agree
+to the terms of this license. If you do not agree, do not use, copy, or
+distribute the software.
+
+## 2. License Grant
+
+Subject to the limitations in Section 3, the copyright holder grants you
+a non-exclusive, royalty-free, worldwide license to:
+
+(a) **View and study** the source code for educational purposes;
+(b) **Use** the software for personal, non-commercial purposes
+    (including loading the extension as an unpacked extension in your browser);
+(c) **Fork and modify** the source code for your own personal use,
+    provided you do not distribute or publish the modified version;
+(d) **Submit contributions** (issues, pull requests) to the official
+    repository under the terms described in CONTRIBUTING.md.
+
+### 2.1 Definition of "Non-Commercial"
+
+"Non-commercial" means use that does not directly or indirectly generate
+revenue, commercial advantage, or monetary compensation. Internal use by
+a commercial entity (e.g., for market research, competitive analysis, or
+employee productivity) is considered commercial use and requires written
+permission from the copyright holder.
+
+## 3. Limitations
+
+You **MAY NOT**:
+
+(a) **Publish or distribute** the software, or any modified version of
+    it, to any third party — including but not limited to uploading to
+    the Chrome Web Store, any browser extension marketplace, package
+    registry, website, or file-sharing service;
+
+(b) **Provide the software as a service** — whether hosted, managed, or
+    otherwise — to third parties;
+
+(c) **Use the software for commercial purposes** without prior written
+    permission from the copyright holder;
+
+(d) **Remove or alter** any copyright notices, license text, or
+    attribution contained in the software;
+
+(e) **Represent the software as your own work**, or imply endorsement by
+    the copyright holder;
+
+(f) **Use the name "FB Catch"**, its logos, or branding to promote or
+    endorse any derivative work without prior written permission from
+    the copyright holder.
+
+## 4. Contributions
+
+Contributions submitted via pull request are governed by the Developer
+Certificate of Origin (DCO) as described in CONTRIBUTING.md. Contributors
+retain copyright of their contributions but grant the copyright holder a
+perpetual, irrevocable, worldwide, royalty-free license to use, modify,
+distribute, sublicense, and create derivative works from the contribution
+as part of this project, including patent rights necessary to use the
+contribution.
+
+## 5. Third-Party Components
+
+This software currently has no third-party dependencies. If third-party
+components are introduced in the future, their respective licenses will
+be listed in a THIRD-PARTY-NOTICES file in the repository root.
+
+## 6. No Other Rights
+
+All rights not expressly granted herein are reserved by the copyright
+holder. Nothing in this license shall be construed as granting any right
+to use the copyright holder's trademarks, trade names, or branding.
+
+## 7. Termination
+
+This license terminates automatically if you violate any of its terms.
+Upon termination, you must cease all use, uninstall the extension, and
+destroy all copies — including any derivative works. If you cure the
+violation within 30 days of becoming aware of it, the license is
+reinstated. The 30-day cure period does not apply to violations of
+Section 3(a) (unauthorized distribution).
+
+## 8. Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES,
+OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE,
+ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+## 9. Chrome Web Store Supplemental Terms
+
+If you install this software from the Chrome Web Store, the following
+additional terms apply:
+
+(a) You are granted a personal, non-exclusive license to use the
+    extension as installed from the Chrome Web Store, consistent with
+    Section 2 of this license.
+
+(b) The limitations in Section 3 remain in full effect. Installation
+    from the Chrome Web Store does not grant commercial use rights,
+    redistribution rights, or any rights beyond those stated in
+    Section 2.
+
+(c) In the event of conflict between the Chrome Web Store Developer
+    Agreement and this license, the more restrictive provision applies
+    to the extent permitted by applicable law.
+
+## 10. Governing Law
+
+This license shall be governed by the laws of the Republic of China
+(Taiwan). Any dispute arising from this license shall be submitted to the
+jurisdiction of the Taiwan Taipei District Court as the court of first
+instance.
+
+## 11. Language
+
+This license is provided in English and Traditional Chinese. In the
+event of any inconsistency between the two versions, the English version
+shall prevail.
+
+---
+
+# FB Catch 原始碼公開授權 v1.0
+
+Copyright (c) 2026 Thomas Chen. 保留所有權利。
+
+---
+
+## 1. 接受條款
+
+使用、複製或散布本軟體，即表示您接受並同意本授權條款。
+若不同意，請勿使用、複製或散布本軟體。
+
+## 2. 授權範圍
+
+在第 3 條限制下，著作權人授予您非獨家、免權利金、全球性的授權：
+
+(a) **查看與學習**原始碼，供教育用途；
+(b) **個人使用**本軟體，限非商業目的
+    （包括以未封裝擴充功能的方式載入瀏覽器）；
+(c) **Fork 並修改**原始碼供個人使用，
+    但不得散布或發布修改後的版本；
+(d) 依 CONTRIBUTING.md 條款向官方儲存庫**提交貢獻**
+    （issue、pull request）。
+
+### 2.1 「非商業」定義
+
+「非商業」意指不直接或間接產生營收、商業優勢或金錢報酬之使用。商業實體的內部
+使用（例如市場研究、競爭分析或員工生產力工具）視為商業使用，需取得著作權人書面
+許可。
+
+## 3. 限制
+
+您**不得**：
+
+(a) 將本軟體或其任何修改版本**發布或散布**給第三方——
+    包括但不限於上傳至 Chrome Web Store、任何瀏覽器擴充商店、
+    套件註冊中心、網站或檔案分享服務；
+
+(b) 以託管、代管或其他方式，將本軟體**作為服務提供**給第三方；
+
+(c) 未經著作權人事先書面許可，**將本軟體用於商業目的**；
+
+(d) **移除或修改**軟體中的任何著作權聲明、授權文字或署名；
+
+(e) **將本軟體表示為您的作品**，或暗示著作權人為其背書；
+
+(f) 未經著作權人事先書面許可，**使用「FB Catch」名稱**、標誌或品牌
+    來推廣或為任何衍生作品背書。
+
+## 4. 貢獻
+
+透過 pull request 提交的貢獻受 CONTRIBUTING.md 中的開發者原創聲明
+（DCO）約束。貢獻者保留其貢獻的著作權，但授予著作權人永久、不可撤銷、
+全球性、免權利金的授權，以使用、修改、散布、再授權及基於該貢獻建立衍生
+作品作為本專案的一部分，包括使用該貢獻所必要的專利權。
+
+## 5. 第三方元件
+
+本軟體目前無第三方相依套件。若未來引入第三方元件，其各自的授權將列於
+儲存庫根目錄的 THIRD-PARTY-NOTICES 檔案中。
+
+## 6. 其餘權利保留
+
+未明確授予之所有權利均由著作權人保留。本授權不應被解釋為授予使用
+著作權人商標、商號或品牌之任何權利。
+
+## 7. 終止
+
+若您違反本授權任何條款，授權自動終止。終止後，您必須停止所有使用、
+解除安裝擴充功能，並銷毀所有副本——包括任何衍生作品。若您在知悉違反後
+30 天內改正，授權將恢復。30 天改正期不適用於違反第 3(a) 條（未授權散布）
+之情形。
+
+## 8. 免責聲明
+
+本軟體按「現狀」提供，不附任何明示或默示擔保，包括但不限於適銷性、
+特定目的適用性及不侵權之擔保。著作權人在任何情況下均不對因使用本軟體
+所生之任何請求、損害或其他責任負責，無論基於契約、侵權或其他法律理論。
+
+## 9. Chrome Web Store 補充條款
+
+若您從 Chrome Web Store 安裝本軟體，以下附加條款適用：
+
+(a) 您被授予個人、非獨家的授權，以依本授權第 2 條使用從 Chrome Web Store
+    安裝的擴充功能。
+
+(b) 第 3 條之限制仍完全有效。從 Chrome Web Store 安裝不授予商業使用權、
+    再散布權，或超出第 2 條之任何權利。
+
+(c) 若 Chrome Web Store 開發者協議與本授權有衝突，在適用法律允許的範圍內，
+    以較嚴格之條款為準。
+
+## 10. 準據法
+
+本授權以中華民國（台灣）法律為準據法。因本授權所生之任何爭議，以臺灣
+臺北地方法院為第一審管轄法院。
+
+## 11. 語言
+
+本授權以英文及繁體中文提供。兩版本如有不一致之處，以英文版為準。

@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "FB Catch",
+  "description": "Export Facebook posts & comments — local only, no data upload",
+  "version": "0.1.0",
+  "author": "Thomas Chen",
+  "homepage_url": "https://github.com/thomas-jimmy-chen/fb-catch",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "scripting",
+    "downloads",
+    "tabs",
+    "offscreen",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "*://*.facebook.com/*",
+    "*://fb.com/*",
+    "*://*.fbcdn.net/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.facebook.com/*", "*://fb.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["injected.js", "icons/icon48.png"],
+      "matches": ["*://*.facebook.com/*"]
+    }
+  ]
+}

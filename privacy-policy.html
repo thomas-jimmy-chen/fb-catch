@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FB Catch — Privacy Policy</title>
+<style>
+  :root { --bg: #0f0f1a; --card: #1a1a2e; --text: #e0e0e0; --accent: #4a9eff; --muted: #888; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; padding: 2rem 1rem; }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { color: var(--accent); font-size: 1.8rem; margin-bottom: 0.3rem; }
+  .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+  h2 { color: var(--accent); font-size: 1.2rem; margin: 2rem 0 0.8rem; border-bottom: 1px solid #2a2a3e; padding-bottom: 0.4rem; }
+  p, li { font-size: 0.95rem; margin-bottom: 0.6rem; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.4rem; }
+  .highlight { background: #1e3a5f; border-left: 3px solid var(--accent); padding: 1rem 1.2rem; border-radius: 6px; margin: 1rem 0; }
+  .highlight strong { color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid #2a2a3e; font-size: 0.9rem; }
+  th { color: var(--accent); font-weight: 600; }
+  .footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #2a2a3e; color: var(--muted); font-size: 0.85rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>FB Catch — Privacy Policy</h1>
+<p class="subtitle">Last updated: August 16, 2026</p>
+
+<div class="highlight">
+  <strong>TL;DR:</strong> FB Catch processes everything locally in your browser.
+  No data is collected, stored on external servers, or shared with anyone.
+  We have no servers, no accounts, no analytics.
+</div>
+
+<h2>1. What FB Catch Does</h2>
+<p>FB Catch is a Chrome extension that lets you export posts, comments, reactions, and media from Facebook Pages you visit. It works entirely within your browser — there is no backend server, cloud service, or external API involved.</p>
+
+<h2>2. Data We Collect</h2>
+<p><strong>None.</strong></p>
+<p>FB Catch does not collect, transmit, or store any user data on external servers. Specifically:</p>
+<ul>
+  <li>No personal information is collected</li>
+  <li>No browsing history is tracked</li>
+  <li>No analytics or telemetry is sent</li>
+  <li>No cookies are read or transmitted to third parties</li>
+  <li>No account or login is required</li>
+</ul>
+
+<h2>3. Data That Stays on Your Device</h2>
+<p>All data processed by FB Catch remains entirely on your local machine:</p>
+<table>
+  <tr><th>Data</th><th>Storage</th><th>Purpose</th></tr>
+  <tr><td>Exported posts &amp; comments</td><td>Browser downloads folder</td><td>User-requested export</td></tr>
+  <tr><td>Downloaded images &amp; videos</td><td>Browser downloads folder</td><td>User-requested media download</td></tr>
+  <tr><td>Extension settings</td><td><code>chrome.storage.local</code></td><td>Remember user preferences</td></tr>
+  <tr><td>Scan progress &amp; logs</td><td><code>chrome.storage.local</code></td><td>Resume interrupted scans</td></tr>
+</table>
+<p><code>chrome.storage.local</code> is a browser-managed storage area accessible only to this extension. It does not sync across devices. This data may be cleared if you clear your browser data or remove the extension.</p>
+<p>You can clear all stored data at any time by removing the extension or going to <em>chrome://extensions</em> → FB Catch → Details → Clear Storage.</p>
+
+<h2>4. Permissions Explained</h2>
+<p>FB Catch requests the following browser permissions, each for a specific purpose:</p>
+<table>
+  <tr><th>Permission</th><th>Why It's Needed</th></tr>
+  <tr><td><code>storage</code></td><td>Save your settings and scan progress locally</td></tr>
+  <tr><td><code>scripting</code></td><td>Inject the export interface into Facebook pages</td></tr>
+  <tr><td><code>downloads</code></td><td>Save exported files (JSON, CSV, images) to your computer</td></tr>
+  <tr><td><code>tabs</code></td><td>Detect which Facebook page you're on; navigate during batch export</td></tr>
+  <tr><td><code>webNavigation</code></td><td>Monitor page load completion during batch export</td></tr>
+  <tr><td><code>offscreen</code></td><td>Process media operations (e.g., icon animation) in the background without affecting page performance</td></tr>
+  <tr><td><code>host_permissions</code> (facebook.com, fb.com)</td><td>Access Facebook pages to read publicly visible content</td></tr>
+  <tr><td><code>host_permissions</code> (fbcdn.net)</td><td>Download images and videos from Facebook's content delivery network</td></tr>
+</table>
+<p>No permission is used to collect, transmit, or share any data with external parties.</p>
+
+<h2>5. Third-Party Services</h2>
+<p>FB Catch does not use any third-party services, including:</p>
+<ul>
+  <li>No analytics (Google Analytics, Mixpanel, etc.)</li>
+  <li>No crash reporting</li>
+  <li>No advertising</li>
+  <li>No external APIs</li>
+  <li>No CDN or cloud storage</li>
+</ul>
+
+<h2>6. Limited Use Disclosure</h2>
+<p>FB Catch's use of information received from Chrome APIs adheres to the <a href="https://developer.chrome.com/docs/webstore/program-policies/limited-use/">Chrome Web Store User Data Policy</a>, including the Limited Use requirements. Specifically:</p>
+<ul>
+  <li>Data obtained through Chrome APIs is used solely to provide the extension's stated functionality (exporting posts, comments, and media)</li>
+  <li>Data is not transferred to any external server, third party, or advertising service</li>
+  <li>Data is not used for purposes unrelated to the extension's core functionality</li>
+  <li>Data is not sold, shared, or used for creditworthiness determination or lending purposes</li>
+</ul>
+
+<h2>7. Facebook Data</h2>
+<p>FB Catch only accesses publicly available content that you can already see in your browser. The extension does not:</p>
+<ul>
+  <li>Access private messages or non-public content</li>
+  <li>Bypass any access controls or privacy settings</li>
+  <li>Store or transmit your Facebook credentials</li>
+  <li>Perform any actions on your behalf (no posting, liking, or following)</li>
+</ul>
+<p>This is an independent tool, not affiliated with, endorsed by, or sponsored by Meta Platforms, Inc. <strong>Users are solely responsible for ensuring their use of this extension complies with Facebook's Terms of Service, applicable laws, and local regulations.</strong> FB Catch does not bypass access controls, but users remain accountable for how they use exported data.</p>
+
+<h2>8. Children's Privacy</h2>
+<p>FB Catch is not designed for, targeted at, or intended for use by children under 13 years of age. We do not knowingly collect any information from children. If you are under 13, please do not use this extension.</p>
+
+<h2>9. Regional Privacy Rights</h2>
+<h3>European Union (GDPR)</h3>
+<p>FB Catch does not process any personal data as defined by the General Data Protection Regulation (GDPR). All data processing occurs locally on your device and never leaves your browser. Since no personal data is collected or transmitted externally, there is no data controller, no data processing agreement required, and no Data Protection Officer designated.</p>
+<h3>California (CCPA/CPRA)</h3>
+<p>FB Catch does not sell, share, or disclose any personal information as defined by the California Consumer Privacy Act. All data remains under your local control.</p>
+<h3>Taiwan (PDPA)</h3>
+<p>FB Catch does not collect, process, or use personal data as defined by the Taiwan Personal Data Protection Act. No data is transmitted to any party.</p>
+
+<h2>10. Data Retention</h2>
+<p>FB Catch does not retain any data on external servers. Local data stored in <code>chrome.storage.local</code> persists until:</p>
+<ul>
+  <li>You uninstall the extension (all data is automatically deleted)</li>
+  <li>You manually clear the extension's storage</li>
+  <li>You clear your browser's local data</li>
+</ul>
+<p>Downloaded files (JSON, CSV, images, videos) remain in your downloads folder and are managed by your operating system, not by the extension.</p>
+
+<h2>11. Changes to This Policy</h2>
+<p>If this privacy policy is updated, the "Last updated" date at the top will be revised. Since FB Catch collects no data, meaningful changes are unlikely. Material changes will be announced via the extension's GitHub repository.</p>
+
+<h2>12. Contact</h2>
+<p>If you have questions about this privacy policy, you can reach us at:</p>
+<ul>
+  <li>GitHub: <a href="https://github.com/thomas-jimmy-chen/fb-catch/issues">github.com/thomas-jimmy-chen/fb-catch</a></li>
+</ul>
+
+<div class="footer">
+  <p>&copy; 2026 Thomas Chen. FB Catch is independently developed and not affiliated with Meta Platforms, Inc.</p>
+</div>
+
+</div>
+</body>
+</html>
